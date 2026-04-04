@@ -1,8 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'models/weather_model.dart';
+import 'services/weather_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(const SoHotApp());
 }
 
@@ -74,6 +80,48 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   bool isCelsius = true;
+  final WeatherService _weatherService = WeatherService();
+  Weather? _weather;
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUnitPreference();
+    _fetchWeather();
+  }
+
+  Future<void> _loadUnitPreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isCelsius = prefs.getBool('isCelsius') ?? true;
+    });
+  }
+
+  Future<void> _saveUnitPreference(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isCelsius', value);
+  }
+
+  Future<void> _fetchWeather() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final weather = await _weatherService.fetchWeather();
+      setState(() {
+        _weather = weather;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,13 +181,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           const Icon(Icons.location_on, color: Color(0xFF68ABFF)),
                           const SizedBox(width: 8),
                           Text(
-                            'New York, NY',
+                            _weather?.cityName ?? 'Loading...',
                             style: textTheme.headlineSmall?.copyWith(fontSize: 18),
                           ),
                         ],
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: _fetchWeather,
                         icon: const Icon(Icons.refresh, color: Color(0xFF68ABFF)),
                       ),
                     ],
@@ -148,126 +196,150 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
                 // Main Content
                 Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Editorial Hero Section
-                        Text(
-                          'UPPER WEST SIDE',
-                          style: textTheme.labelMedium?.copyWith(
-                            letterSpacing: 2.0,
-                            fontWeight: FontWeight.w600,
-                            color: colorScheme.onPrimaryContainer.withOpacity(0.6),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              isCelsius ? '22' : '72',
-                              style: textTheme.displayLarge,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16),
-                              child: Text(
-                                '°',
-                                style: textTheme.displayLarge?.copyWith(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
+                  child: _isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : _error != null
+                          ? Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                                    const SizedBox(height: 16),
+                                    Text(_error!, textAlign: TextAlign.center),
+                                    const SizedBox(height: 16),
+                                    ElevatedButton(
+                                      onPressed: _fetchWeather,
+                                      child: const Text('Retry'),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 24, left: 8),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isCelsius = !isCelsius;
-                                  });
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: colorScheme.onPrimaryContainer.withOpacity(0.2),
-                                    ),
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Text(
-                                    isCelsius ? 'F' : 'C',
-                                    style: textTheme.labelSmall?.copyWith(
-                                      fontWeight: FontWeight.w800,
-                                      color: colorScheme.onPrimaryContainer.withOpacity(0.4),
+                            )
+                          : SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Editorial Hero Section
+                                  Text(
+                                    _weather!.cityName.toUpperCase(),
+                                    style: textTheme.labelMedium?.copyWith(
+                                      letterSpacing: 2.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: colorScheme.onPrimaryContainer.withOpacity(0.6),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Text(
-                              'Partly Cloudy',
-                              style: textTheme.headlineSmall?.copyWith(
-                                fontSize: 22,
-                                color: colorScheme.onPrimaryContainer.withOpacity(0.8),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Container(
-                              width: 4,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: colorScheme.onPrimaryContainer.withOpacity(0.3),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              'Feels like ${isCelsius ? '20' : '68'}°',
-                              style: textTheme.labelMedium?.copyWith(
-                                fontSize: 14,
-                                color: colorScheme.onPrimaryContainer.withOpacity(0.7),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 40),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        isCelsius
+                                            ? _weather!.temperature.round().toString()
+                                            : ((_weather!.temperature * 9 / 5) + 32).round().toString(),
+                                        style: textTheme.displayLarge,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 16),
+                                        child: Text(
+                                          '°',
+                                          style: textTheme.displayLarge?.copyWith(
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 24, left: 8),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isCelsius = !isCelsius;
+                                              _saveUnitPreference(isCelsius);
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: colorScheme.onPrimaryContainer.withOpacity(0.2),
+                                              ),
+                                              borderRadius: BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              isCelsius ? 'F' : 'C',
+                                              style: textTheme.labelSmall?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                color: colorScheme.onPrimaryContainer.withOpacity(0.4),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        _weather!.description,
+                                        style: textTheme.headlineSmall?.copyWith(
+                                          fontSize: 22,
+                                          color: colorScheme.onPrimaryContainer.withOpacity(0.8),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Container(
+                                        width: 4,
+                                        height: 4,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: colorScheme.onPrimaryContainer.withOpacity(0.3),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Text(
+                                        'Feels like ${isCelsius ? _weather!.feelsLike.round() : ((_weather!.feelsLike * 9 / 5) + 32).round()}°',
+                                        style: textTheme.labelMedium?.copyWith(
+                                          fontSize: 14,
+                                          color: colorScheme.onPrimaryContainer.withOpacity(0.7),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 40),
 
-                        // Glassmorphic Bento Grid
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildDetailCard(
-                                context,
-                                icon: Icons.air,
-                                label: 'Wind Speed',
-                                value: '19',
-                                unit: 'km/h',
-                                badge: 'WNW',
+                                  // Glassmorphic Bento Grid
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: _buildDetailCard(
+                                          context,
+                                          icon: Icons.air,
+                                          label: 'Wind Speed',
+                                          value: _weather!.windSpeed.round().toString(),
+                                          unit: 'km/h',
+                                          badge: _weather!.windDirection,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: _buildDetailCard(
+                                          context,
+                                          icon: Icons.water_drop,
+                                          label: 'Humidity',
+                                          value: _weather!.humidity.toString(),
+                                          unit: '%',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _buildDetailCard(
-                                context,
-                                icon: Icons.water_drop,
-                                label: 'Humidity',
-                                value: '44',
-                                unit: '%',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),
