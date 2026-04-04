@@ -29,7 +29,7 @@ The app focuses on three core data points: **Location**, **Temperature**, and **
 - **Persistence:** [Shared Preferences](https://pub.dev/packages/shared_preferences)
 - **Environment Management:** [Flutter Dotenv](https://pub.dev/packages/flutter_dotenv)
 - **Typography:** [Google Fonts](https://pub.dev/packages/google_fonts) (Manrope & Inter)
-- **Version Management:** [FVM](https://fvm.app/) (Flutter Version Management)
+- **Version Management:** [FVM](https://fvm.app/) (Flutter) & [DVM/DVMX](https://github.com/m-hamshari/dvm) (Dart)
 
 ## 📁 Project Structure
 
@@ -51,6 +51,7 @@ climate/
 ### Prerequisites
 - Flutter SDK installed
 - [FVM](https://fvm.app/) installed (Required for this project)
+- [DVM/DVMX](https://github.com/m-hamshari/dvm) installed (Optional)
 - OpenWeatherMap API Key
 
 ### Configuration
