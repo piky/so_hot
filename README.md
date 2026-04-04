@@ -6,8 +6,11 @@ SoHot is a minimalist, "glance-and-go" mobile weather application designed to pr
 
 The app focuses on three core data points: **Location**, **Temperature**, and **"Feels Like"** conditions. It uses high-contrast typography and an ethereal design language to communicate weather status through both data and visual mood.
 
-![Celsius Display](./design/Screenshot_20260404_215323.jpg)
-![Fahrenheit Display](./design/Screenshot_20260404_215334.jpg)
+| Celsius Display | Fahrenheit Display |
+| :---: | :---: |
+| ![Celsius Display](./design/Screenshot_20260404_215323.jpg) | ![Fahrenheit Display](./design/Screenshot_20260404_215334.jpg) |
+
+> **Note:** These screenshots were captured from a test run on an **Android 13 (API 33)** device.
 
 ### Key Features
 - **Real-time Weather Integration:** Powered by OpenWeatherMap API for accurate, up-to-the-minute data.
