@@ -1,0 +1,41 @@
+# Root project .gitignore
+
+# FVM Version Cache
+.fvm/
+
+# Environment variables
+.env
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# macOS
+.DS_Store
+
+# SoHot Flutter Project
+so_hot/.dart_tool/
+so_hot/.flutter-plugins
+so_hot/.flutter-plugins-dependencies
+so_hot/.pub-cache/
+so_hot/.pub/
+so_hot/build/
+so_hot/ios/Flutter/.last_build_id
+so_hot/android/app/debug
+so_hot/android/app/profile
+so_hot/android/app/release
+so_hot/linux/flutter/ephemeral/
+so_hot/macos/Flutter/ephemeral/
+so_hot/windows/flutter/ephemeral/
+so_hot/windows/CMakeLists.txt.user
+
+# DVM / Dart SDK
+so_hot/.dvm/dart_sdk
+
+# General Flutter/Dart/Pub (for any subprojects)
+**/doc/api/
+**/coverage/
+app.*.symbols
+app.*.map.json

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atmospheric Weather</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#c9e7f7",
+                "surface-tint": "#0060ad",
+                "surface": "#f7f9fc",
+                "on-surface-variant": "#596065",
+                "on-surface": "#2c3338",
+                "on-secondary-container": "#395663",
+                "tertiary-container": "#cccefe",
+                "surface-container": "#e9eef3",
+                "inverse-on-surface": "#9a9da0",
+                "error-dim": "#67040d",
+                "surface-dim": "#d4dbe1",
+                "on-tertiary-container": "#41446c",
+                "on-error": "#fff7f6",
+                "surface-container-high": "#e3e9ee",
+                "on-tertiary-fixed": "#2e3157",
+                "on-tertiary": "#fbf7ff",
+                "on-primary-fixed": "#000c1e",
+                "on-secondary": "#f3faff",
+                "tertiary": "#595c85",
+                "on-secondary-fixed": "#264350",
+                "primary-fixed": "#68abff",
+                "surface-variant": "#dce3e9",
+                "secondary-fixed-dim": "#bbd9e9",
+                "secondary": "#466370",
+                "primary-fixed-dim": "#599ef1",
+                "on-primary": "#f8f8ff",
+                "surface-container-highest": "#dce3e9",
+                "surface-container-low": "#f0f4f8",
+                "on-primary-fixed-variant": "#003461",
+                "error": "#a83836",
+                "on-tertiary-fixed-variant": "#4b4d75",
+                "on-primary-container": "#002b52",
+                "on-secondary-fixed-variant": "#435f6d",
+                "tertiary-dim": "#4d5078",
+                "surface-bright": "#f7f9fc",
+                "on-error-container": "#6e0a12",
+                "background": "#f7f9fc",
+                "tertiary-fixed": "#cccefe",
+                "primary-dim": "#005498",
+                "error-container": "#fa746f",
+                "surface-container-lowest": "#ffffff",
+                "inverse-surface": "#0b0f11",
+                "secondary-container": "#c9e7f7",
+                "secondary-dim": "#3a5764",
+                "on-background": "#2c3338",
+                "inverse-primary": "#68abff",
+                "primary": "#0060ad",
+                "tertiary-fixed-dim": "#bec0ef",
+                "primary-container": "#68abff",
+                "outline": "#747c81",
+                "outline-variant": "#abb3b9"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Manrope"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .atmospheric-bg {
+            background: linear-gradient(160deg, #68abff 0%, #c9e7f7 60%, #f7f9fc 100%);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col"><div class="w-full flex justify-between items-center px-6 py-2 bg-transparent text-on-surface z-50">
+<div class="font-inter text-sm font-semibold tracking-tight">9:41 AM</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] leading-none" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[18px] leading-none" data-icon="wifi">wifi</span>
+<span class="material-symbols-outlined text-[18px] leading-none" data-icon="battery_full">battery_full</span>
+</div>
+</div>
+<!-- Top Navigation Shell -->
+<header class="w-full top-0 bg-transparent flex justify-between items-center px-6 py-4 w-full z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-400 dark:text-blue-300" data-icon="location_on">location_on</span>
+<h1 class="font-manrope font-bold text-on-surface dark:text-on-surface-dark text-lg">New York, NY</h1>
+</div>
+<button class="hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-blue-400 dark:text-blue-300" data-icon="refresh">refresh</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col atmospheric-bg relative overflow-hidden px-6 pt-8 pb-32">
+<!-- Abstract Atmospheric Visual -->
+<div class="absolute top-[-10%] right-[-10%] w-64 h-64 bg-white/20 blur-[80px] rounded-full"></div>
+<div class="absolute bottom-[20%] left-[-20%] w-80 h-80 bg-blue-400/10 blur-[100px] rounded-full"></div>
+<!-- Editorial Hero Section -->
+<section class="relative z-0 flex flex-col mb-12">
+<div class="flex flex-col items-start">
+<span class="font-label text-xs uppercase tracking-widest text-on-primary-container/60 mb-2 font-semibold">Upper West Side</span>
+<div class="flex items-start">
+<h2 class="text-[8rem] font-extrabold font-headline leading-[0.9] tracking-tighter text-on-primary-container">22</h2>
+<span class="text-4xl font-bold mt-4 text-on-primary-container">°</span><button class="ml-2 mt-4 text-sm font-bold text-on-primary-container/40 hover:text-on-primary-container/80 transition-colors border border-on-primary-container/20 rounded px-1.5 py-0.5 leading-none self-start">F</button>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<span class="text-xl font-headline font-semibold text-on-primary-container/80">Partly Cloudy</span>
+<div class="h-1 w-1 rounded-full bg-on-primary-container/30"></div>
+<span class="font-label text-sm text-on-primary-container/70">Feels like 20°</span>
+</div>
+</div>
+</section>
+<!-- Glassmorphic Bento Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Detail Cards -->
+<div class="bg-surface-container-lowest rounded-3xl p-5 flex flex-col justify-between aspect-square shadow-sm">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-blue-500" data-icon="air">air</span>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-sm font-label font-bold">WNW</span>
+</div>
+<div>
+<p class="font-label text-[10px] text-on-surface-variant font-medium">Wind Speed</p>
+<p class="font-headline text-2xl font-bold">19 <span class="text-xs text-on-surface-variant">km/h</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-3xl p-5 flex flex-col justify-between aspect-square shadow-sm">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-blue-500" data-icon="water_drop">water_drop</span>
+</div>
+<div>
+<p class="font-label text-[10px] text-on-surface-variant font-medium">Humidity</p>
+<p class="font-headline text-2xl font-bold">44<span class="text-xs text-on-surface-variant">%</span></p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-white/15 dark:bg-slate-900/15 backdrop-blur-xl shadow-xl">
+<!-- Home Active -->
+<button class="flex flex-col items-center justify-center bg-blue-100/30 dark:bg-blue-900/30 text-blue-600 dark:text-blue-200 rounded-2xl p-3 scale-110 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="cloud_queue" data-weight="fill" style="font-variation-settings: 'FILL' 1;">cloud_queue</span>
+<span class="font-inter text-[10px] font-medium mt-1">Today</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-3 hover:bg-white/10 transition-opacity">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+<span class="font-inter text-[10px] font-medium mt-1">Forecast</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-3 hover:bg-white/10 transition-opacity">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-inter text-[10px] font-medium mt-1">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-3 hover:bg-white/10 transition-opacity">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-inter text-[10px] font-medium mt-1">Settings</span>
+</button>
+</nav>
+</body></html>
