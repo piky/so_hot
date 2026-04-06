@@ -320,8 +320,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                           context,
                                           icon: Icons.air,
                                           label: 'Wind Speed',
-                                          value: _weather!.windSpeed.round().toString(),
-                                          unit: 'km/h',
+                                          value: isCelsius
+                                              ? _weather!.windSpeed.round().toString()
+                                              : (_weather!.windSpeed * 0.621371).round().toString(),
+                                          unit: isCelsius ? 'km/h' : 'mph',
                                           badge: _weather!.windDirection,
                                         ),
                                       ),
