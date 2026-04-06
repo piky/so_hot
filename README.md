@@ -8,7 +8,7 @@ The app focuses on three core data points: **Location**, **Temperature**, and **
 
 | Celsius Display | Fahrenheit Display |
 | :---: | :---: |
-| ![Celsius Display](./design/Screenshot_20260404_215323.jpg) | ![Fahrenheit Display](./design/Screenshot_20260404_215334.jpg) |
+| ![Celsius Display](./design/Screenshot_20260404_215323.jpg) | ![Fahrenheit Display](./design/Screenshot_20260406_222015.jpg) |
 
 > **Note:** These screenshots were captured from a test run on an **Android 13 (API 33)** device.
 
